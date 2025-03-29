@@ -35,6 +35,9 @@ class PFPGenerator:
             prompt (str): Text prompt describing the desired output
             negative_prompt (str): Things to avoid in the generation
             seed (int): Random seed for reproducibility
+            
+        Returns:
+            str: Path to the generated image file, or None if generation failed
         """
         payload = {
             "steps": 50,
@@ -53,7 +56,7 @@ class PFPGenerator:
                     "weight": -1
                 }
             ],
-            "style_preset": "anime"
+            "style_preset": "pixel-art"  # Corrected to pixel-art (with hyphen) for better results
         }
 
         try:
@@ -80,9 +83,13 @@ class PFPGenerator:
                     with open(output_file, "wb") as f:
                         f.write(image_bytes)
                     print(f"Image successfully generated and saved as {output_file}")
+                    
+                    # Return the path to the generated image
+                    return str(output_file)
                 else:
                     print("No image data found in response")
                     print(f"Response content: {json.dumps(response_json, indent=2)}")
+                    return None
             else:
                 print(f"Error: {response.status_code}")
                 print(f"Response: {response.text}")

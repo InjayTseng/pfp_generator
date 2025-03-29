@@ -6,153 +6,190 @@ import os
 class NFTTraitGenerator:
     def __init__(self):
         # Collection info
-        self.collection_name = "Crayon Cats"
-        self.base_url = "https://crayoncats.io"
-        self.image_base_url = "https://storage.crayoncats.io/images"
+        self.collection_name = "Pixel Heroes"
+        self.base_url = "https://pixelheroes.io"
+        self.image_base_url = "https://storage.pixelheroes.io/images"
         self.description_templates = [
-            "A whimsical {base} drawn in crayon style. This adorable feline has {fur_color} fur, {eyes} eyes, and a {expression} expression. {special_trait}",
-            "Meet this charming {base} with {fur_color} fur! Known for their {eyes} eyes and {expression} personality. {special_trait}",
-            "An enchanting {base} featuring {fur_color} fur and {eyes} eyes. Always wearing a {expression} look. {special_trait}"
+            "A charming 16-bit {base} with {hair_color} hair. Known for being {expression} and having {eyes} eyes. {special_trait}",
+            "Meet {name}, a {base} from the pixel realm. Has {hair_color} hair and {eyes} eyes with a {expression} personality. {special_trait}",
+            "A classic RPG {base} with {hair_color} hair and {eyes} eyes. Always looks {expression}. {special_trait}"
         ]
         
         # Special traits for each base character
         self.special_traits = {
-            "Astronaut": "Dreams of exploring the cosmic catnip fields.",
-            "Princess": "Rules over the kingdom of Purrington with grace and wisdom.",
-            "Pirate": "Sails the seven seas in search of legendary fish treasures.",
-            "Chef": "Creates the most delectable gourmet cat treats in town.",
-            "Superhero": "Protects the city from notorious dog villains.",
-            "Artist": "Paints masterpieces using whiskers as brushes.",
-            "Wizard": "Masters the ancient arts of feline magic.",
-            "Rock Star": "Performs sold-out concerts at the Meow Arena.",
-            "Ninja": "Stealthily prowls through the shadows.",
-            "Scientist": "Conducts groundbreaking research in catnip physics.",
-            "Explorer": "Discovers new territories in the backyard jungle.",
-            "Detective": "Solves mysterious cases of missing yarn balls."
+            "Warrior": "Known for bravery in battle and unwavering loyalty.",
+            "Knight": "Protects the realm with honor and courage.",
+            "Princess": "Rules with wisdom and kindness.",
+            "Wizard": "Masters ancient magical arts and spells.",
+            "Scholar": "Studies ancient tomes and shares knowledge.",
+            "Witch": "Brews powerful potions and casts mysterious spells.",
+            "Cook": "Creates delicious meals that restore health points.",
+            "Pirate": "Sails the digital seas in search of pixel treasures.",
+            "Hero": "Always ready to save the day when danger appears.",
+            "Alchemist": "Transforms ordinary items into magical artifacts.",
+            "Woodcutter": "Provides the finest wood for crafting weapons.",
+            "Tech": "Tinkers with gadgets and futuristic devices.",
+            "Frog": "A simple amphibian with unexpected wisdom.",
+            "Cat": "Lazes around but occasionally helps on quests."
         }
 
         # Define possible traits for each category
         self.traits = {
             "Base": [
-                "Astronaut Cat", "Princess Cat", "Pirate Cat", "Chef Cat",
-                "Superhero Cat", "Artist Cat", "Wizard Cat", "Rock Star Cat",
-                "Ninja Cat", "Scientist Cat", "Explorer Cat", "Detective Cat"
+                "Warrior", "Knight", "Lady", "Wizard", "Scholar", "Princess", 
+                "Pirate", "Cook", "Hero", "Witch", "Alchemist", "Woodcutter", 
+                "Tech", "Shepherd", "Frog", "Cat", "Monster"
             ],
-            "Fur Color": [
-                "White", "Black", "Orange", "Gray", "Brown", "Calico",
-                "Siamese", "Blue", "Purple", "Rainbow", "Golden", "Silver"
+            "Name": [
+                "Cal", "Roderick", "Barbara", "Ansel", "Joelle", "Arabella", 
+                "Bjorn", "Harald", "Finn", "Morgana", "Oswald", "Chad", 
+                "Arnold", "Edith", "Nancy", "Timothy", "Hugh", "Virgil", 
+                "Otis", "Quincy"
+            ],
+            "Hair Color": [
+                "Brown", "Blonde", "Red", "Black", "Gray", "White", 
+                "Blue", "Green", "Purple", "Orange"
             ],
             "Eyes": [
-                "Round", "Curious", "Sleepy", "Determined", "Sparkly",
-                "Mysterious", "Playful", "Wise", "Brave", "Sweet",
-                "Focused", "Dreamy"
+                "Round", "Small", "Focused", "Bright", "Wise", "Kind",
+                "Determined", "Curious", "Gentle", "Stern"
             ],
             "Expression": [
-                "Happy", "Excited", "Confident", "Thoughtful", "Mischievous",
-                "Proud", "Calm", "Energetic", "Friendly", "Bold",
-                "Peaceful", "Adventurous"
+                "Happy", "Serious", "Brave", "Calm", "Thoughtful", "Confident",
+                "Gentle", "Stern", "Curious", "Friendly"
             ],
             "Outfit": {
-                "Astronaut": ["Space Suit", "Helmet", "Oxygen Pack", "Moon Boots"],
-                "Princess": ["Crown", "Royal Dress", "Magic Wand", "Crystal Shoes"],
-                "Pirate": ["Eye Patch", "Striped Shirt", "Captain Hat", "Treasure Map"],
-                "Chef": ["Chef Hat", "Apron", "Wooden Spoon", "Recipe Book"],
-                "Superhero": ["Cape", "Mask", "Power Gloves", "Hero Belt"],
-                "Artist": ["Beret", "Paint Brush", "Palette", "Smock"],
-                "Wizard": ["Pointy Hat", "Magic Staff", "Spell Book", "Enchanted Robe"],
-                "Rock Star": ["Mohawk", "Guitar", "Star Glasses", "Leather Jacket"],
-                "Ninja": ["Headband", "Stealth Suit", "Katana", "Smoke Bombs"],
-                "Scientist": ["Lab Coat", "Safety Goggles", "Test Tubes", "Data Pad"],
-                "Explorer": ["Safari Hat", "Adventure Vest", "Compass", "Binoculars"],
-                "Detective": ["Deerstalker Hat", "Magnifying Glass", "Notebook", "Pipe"]
+                "Warrior": ["Small Sword", "Simple Armor", "Leather Boots", "Shield"],
+                "Knight": ["Helmet", "Chainmail", "Small Shield", "Sword"],
+                "Lady": ["Simple Dress", "Small Necklace", "Elegant Shoes"],
+                "Wizard": ["Wizard Hat", "Magic Staff", "Robe", "Spell Book"],
+                "Scholar": ["Glasses", "Book", "Quill", "Simple Robe"],
+                "Princess": ["Crown", "Royal Dress", "Scepter"],
+                "Pirate": ["Pirate Hat", "Eye Patch", "Small Sword", "Striped Shirt"],
+                "Cook": ["Chef Hat", "Apron", "Wooden Spoon", "Pot"],
+                "Hero": ["Cape", "Simple Armor", "Sword", "Boots"],
+                "Witch": ["Witch Hat", "Magic Wand", "Potion", "Robe"],
+                "Alchemist": ["Small Vial", "Apron", "Gloves", "Goggles"],
+                "Woodcutter": ["Axe", "Plaid Shirt", "Work Boots", "Gloves"],
+                "Tech": ["Glasses", "Tool Belt", "Gadget", "Headset"],
+                "Shepherd": ["Staff", "Simple Clothes", "Hat", "Boots"],
+                "Frog": ["None"],
+                "Cat": ["None"],
+                "Monster": ["Horns", "Claws", "Armor Plates", "Spikes"]
             },
             "Background": [
-                "Space", "Castle", "Ocean", "Kitchen", "City", "Art Studio",
-                "Magic Library", "Concert Stage", "Dojo", "Laboratory",
-                "Jungle", "Mystery Office"
+                "Forest", "Castle", "Village", "Mountain", "Field", "Beach",
+                "Tavern", "Library", "Dungeon", "Market", "Farm", "River",
+                "Cave", "Simple"
             ],
             "Special Effect": [
-                "Stardust", "Hearts", "Lightning", "Bubbles", "Paint Splatter",
-                "Magic Sparkles", "Music Notes", "Smoke", "Data Stream",
-                "Nature Aura", "Time Ripple", "Mystery Fog"
+                "None", "Magic Glow", "Sparkle", "Shadow", "Fire", "Water",
+                "Lightning", "Wind", "Earth", "Light Beam", "Stars"
             ]
         }
         
-        # Define stat ranges
+        # Define stat ranges for RPG characters
         self.stat_ranges = {
-            "Level": (1, 100),
-            "Energy": (1.0, 10.0),
-            "Creativity": (1, 100),
-            "Magic Power": (1, 100),
-            "Agility": (1, 100),
-            "Generation": (1, 5)
+            "Level": (1, 99),
+            "HP": (10, 999),
+            "MP": (0, 500),
+            "Strength": (1, 99),
+            "Intelligence": (1, 99),
+            "Dexterity": (1, 99),
+            "Luck": (1, 99)
         }
 
     def generate_name(self, base: str, traits: Dict) -> str:
-        """Generate a creative name based on traits"""
-        adjectives = {
-            "Astronaut": ["Cosmic", "Stellar", "Nova", "Galaxy"],
-            "Princess": ["Royal", "Majestic", "Noble", "Regal"],
-            "Pirate": ["Captain", "Salty", "Stormy", "Brave"],
-            "Chef": ["Tasty", "Spicy", "Sweet", "Savory"],
-            "Superhero": ["Mighty", "Super", "Amazing", "Ultra"],
-            "Artist": ["Creative", "Colorful", "Artistic", "Dreamy"],
-            "Wizard": ["Mystic", "Magical", "Enchanted", "Arcane"],
-            "Rock Star": ["Electric", "Wild", "Rockin'", "Star"],
-            "Ninja": ["Silent", "Shadow", "Swift", "Stealth"],
-            "Scientist": ["Doctor", "Professor", "Genius", "Smart"],
-            "Explorer": ["Adventure", "Wild", "Brave", "Bold"],
-            "Detective": ["Clever", "Sharp", "Wise", "Sleuth"]
-        }
-        
-        base_type = base.split()[0]  # Get type (e.g., "Astronaut" from "Astronaut Cat")
-        adj = random.choice(adjectives.get(base_type, ["Cool"]))
-        color = traits["Fur Color"].lower()
-        
-        return f"{adj} {color.title()} {base_type}"
+        """Generate a name from the predefined list"""
+        # Simply use a name from the predefined list
+        return random.choice(self.traits["Name"])
 
     def generate_description(self, traits: Dict) -> str:
         """Generate a description based on traits"""
-        base_type = traits["Base"].split()[0]  # Get type (e.g., "Astronaut" from "Astronaut Cat")
+        base_type = traits["Base"]  # Get character type (e.g., "Warrior")
+        name = traits["Name"]  # Get character name
         template = random.choice(self.description_templates)
         
         return template.format(
-            base=traits["Base"],
-            fur_color=traits["Fur Color"].lower(),
+            base=base_type.lower(),
+            name=name,
+            hair_color=traits["Hair Color"].lower(),
             eyes=traits["Eyes"].lower(),
             expression=traits["Expression"].lower(),
-            special_trait=self.special_traits.get(base_type, "A truly unique cat!")
+            special_trait=self.special_traits.get(base_type, "A truly unique character!")
         )
 
     def generate_random_traits(self, token_id: int) -> Dict:
-        # Select base character
+        # Select base character type
         base = random.choice(self.traits["Base"])
-        base_type = base.split()[0]
+        
+        # Get character name
+        name = self.generate_name(base, {})
         
         # Get trait values
-        fur_color = random.choice(self.traits["Fur Color"])
+        hair_color = random.choice(self.traits["Hair Color"])
         eyes = random.choice(self.traits["Eyes"])
         expression = random.choice(self.traits["Expression"])
         background = random.choice(self.traits["Background"])
         special_effect = random.choice(self.traits["Special Effect"])
         
-        # Create traits dict for name/description generation
+        # Create traits dict for description generation
         trait_dict = {
             "Base": base,
-            "Fur Color": fur_color,
+            "Name": name,
+            "Hair Color": hair_color,
             "Eyes": eyes,
             "Expression": expression
         }
         
+        # Generate character caption
+        caption = ""
+        if base == "Warrior":
+            caption = "stout warrior"
+        elif base == "Knight":
+            caption = "mighty knight"
+        elif base == "Lady":
+            caption = "gentle lady"
+        elif base == "Wizard":
+            caption = "wise wizard"
+        elif base == "Scholar":
+            caption = "avid scholar"
+        elif base == "Princess":
+            caption = "fair princess"
+        elif base == "Pirate":
+            caption = "fearsome pirate"
+        elif base == "Cook":
+            caption = "cooks"
+        elif base == "Hero":
+            caption = "saves the day"
+        elif base == "Witch":
+            caption = "cunning witch"
+        elif base == "Alchemist":
+            caption = "alchemist"
+        elif base == "Woodcutter":
+            caption = "woodcutter"
+        elif base == "Tech":
+            caption = "tech enthusiast"
+        elif base == "Shepherd":
+            caption = "herds sheep"
+        elif base == "Frog":
+            caption = "a frog"
+        elif base == "Cat":
+            caption = "one lazy cat"
+        elif base == "Monster":
+            caption = "on the prowl"
+        
         # Generate metadata
         metadata = {
-            "name": f"CAT#{token_id}",
+            "name": f"{name}",
             "description": self.generate_description(trait_dict),
             "external_url": f"{self.base_url}/{token_id}",
             "image": f"{self.image_base_url}/{token_id}.png",
             "attributes": [
                 {"trait_type": "Base", "value": base},
-                {"trait_type": "Fur Color", "value": fur_color},
+                {"trait_type": "Name", "value": name},
+                {"trait_type": "Caption", "value": caption},
+                {"trait_type": "Hair Color", "value": hair_color},
                 {"trait_type": "Eyes", "value": eyes},
                 {"trait_type": "Expression", "value": expression},
                 {"trait_type": "Background", "value": background},
@@ -161,14 +198,15 @@ class NFTTraitGenerator:
         }
         
         # Add outfit pieces
-        outfit_pieces = self.traits["Outfit"].get(base_type, [])
+        outfit_pieces = self.traits["Outfit"].get(base, [])
         for piece in outfit_pieces:
-            metadata["attributes"].append({
-                "trait_type": "Outfit",
-                "value": piece
-            })
+            if piece != "None":
+                metadata["attributes"].append({
+                    "trait_type": "Outfit",
+                    "value": piece
+                })
         
-        # Add stats
+        # Add RPG stats
         metadata["attributes"].extend([
             {
                 "display_type": "number",
@@ -176,29 +214,34 @@ class NFTTraitGenerator:
                 "value": random.randint(*self.stat_ranges["Level"])
             },
             {
-                "display_type": "boost_number",
-                "trait_type": "Energy",
-                "value": round(random.uniform(*self.stat_ranges["Energy"]), 1)
-            },
-            {
-                "display_type": "boost_percentage",
-                "trait_type": "Creativity",
-                "value": random.randint(*self.stat_ranges["Creativity"])
-            },
-            {
-                "display_type": "boost_number",
-                "trait_type": "Magic Power",
-                "value": random.randint(*self.stat_ranges["Magic Power"])
-            },
-            {
-                "display_type": "boost_percentage",
-                "trait_type": "Agility",
-                "value": random.randint(*self.stat_ranges["Agility"])
+                "display_type": "number",
+                "trait_type": "HP",
+                "value": random.randint(*self.stat_ranges["HP"])
             },
             {
                 "display_type": "number",
-                "trait_type": "Generation",
-                "value": random.randint(*self.stat_ranges["Generation"])
+                "trait_type": "MP",
+                "value": random.randint(*self.stat_ranges["MP"])
+            },
+            {
+                "display_type": "number",
+                "trait_type": "Strength",
+                "value": random.randint(*self.stat_ranges["Strength"])
+            },
+            {
+                "display_type": "number",
+                "trait_type": "Intelligence",
+                "value": random.randint(*self.stat_ranges["Intelligence"])
+            },
+            {
+                "display_type": "number",
+                "trait_type": "Dexterity",
+                "value": random.randint(*self.stat_ranges["Dexterity"])
+            },
+            {
+                "display_type": "number",
+                "trait_type": "Luck",
+                "value": random.randint(*self.stat_ranges["Luck"])
             }
         ])
         
